@@ -1,5 +1,6 @@
 package example.com.samsung.a0508practice;
 
+import android.app.ActivityManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Messenger;
@@ -7,6 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.util.Log;
+
+import java.util.Iterator;
+import java.util.List;
 
 public class Main2Activity extends AppCompatActivity {
     private MyGLSurfaceView mGLView;
@@ -29,5 +33,10 @@ public class Main2Activity extends AppCompatActivity {
         i.putExtra("increment",1);
         i.putExtra("updateTime", 10);
         startService(i);
+    }
+
+
+    public void onClickStop(View view) {
+        AnimationService.shouldContinue = false;
     }
 }

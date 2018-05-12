@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.Toast;
 //import example.com.samsung.a0508practice.AnimationService;
 
@@ -40,14 +41,15 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
     private Messenger messenger = new Messenger(new Handler(){
         public void handleMessage(Message message){
-            float angle = message.arg1;
-            mRenderer.setAngle((float)angle);
-            requestRender();
+        float angle = message.arg1;
+        mRenderer.setAngle((float)angle);
+        requestRender();
         }
     });
-
 
     public Messenger getMessenger() {
         return messenger;
     }
+
+
 }

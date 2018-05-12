@@ -21,6 +21,7 @@ import java.net.URL;
  */
 
 public class AnimationService extends IntentService {
+    public static volatile boolean shouldContinue = true;
 
     public AnimationService() {
         super("AnimationService");
@@ -29,27 +30,34 @@ public class AnimationService extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-
         Bundle extras = intent.getExtras();
-        if(extras != null){
+        if (extras != null) {
             Messenger messenger = (Messenger) extras.get("MESSENGER");
-            int startValue = intent.getIntExtra("startValue",0);
-            int endValue = intent.getIntExtra("endValue",180);
-            int increment = intent.getIntExtra("increment",1);
-            int updateTime = intent.getIntExtra("updateTime",10);
+            int startValue = intent.getIntExtra("startValue", 0);
+            int endValue = intent.getIntExtra("endValue", 180);
+            int increment = intent.getIntExtra("increment", 1);
+            int updateTime = intent.getIntExtra("updateTime", 10);
 
-            try{
-                while(startValue <= endValue){
-                    Message msg = Message.obtain();
-                    msg.arg1 = startValue;
-                    messenger.send(msg);
-                    Thread.sleep(updateTime);
-                    startValue+= increment;
+            try {
+                while (startValue <= endValue) {
+                    Log.d("shouldContinue?", ""+ shouldContinue);
+                    if(shouldContinue) {
+                        Message msg = Message.obtain();
+                        msg.arg1 = startValue;
+                        messenger.send(msg);
+                        Thread.sleep(updateTime);
+                        startValue += increment;
+                    } else{
+                        startValue = 0;
+                        shouldContinue = true;
+                        break;
+                    }
                 }
-            } catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
         }
     }
+
 }
